@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cellar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Public+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#141C18;--panel:#1C2721;--panel-2:#233029;--line:#334339;
+ --text:#E6EDE5;--dim:#8FA396;--straw:#CBA84B;--rose:#E08C9C;--stone:#93A9C4;
+ --flag:#E0964B;--hit:#7FBF7A;--miss:#D4736B;--red2:#D4938C}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ink);color:var(--text);
+ font:400 16px/1.55 "Public Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:920px;margin:0 auto;padding:20px 18px 90px}
+.eyebrow{font:700 11px/1 "JetBrains Mono",monospace;letter-spacing:.22em;
+ text-transform:uppercase;color:var(--straw);margin:0 0 14px}
+h1{font:300 clamp(26px,6vw,38px)/1.05 "Fraunces",Georgia,serif;margin:0 0 18px;
+ letter-spacing:-.02em;text-wrap:balance}
+h1 em{font-style:italic;color:var(--straw)}
+
+nav.tabs{display:flex;gap:4px;margin:0 0 26px;border-bottom:1px solid var(--line);
+ overflow-x:auto;-webkit-overflow-scrolling:touch}
+nav.tabs button{flex:none;font:600 12px "JetBrains Mono",monospace;letter-spacing:.04em;
+ text-transform:uppercase;background:none;border:none;color:var(--dim);
+ padding:10px 14px;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
+nav.tabs button:hover{color:var(--text)}
+nav.tabs button.on{color:var(--straw);border-bottom-color:var(--straw)}
+nav.tabs button:focus-visible{outline:2px solid var(--straw);outline-offset:-2px}
+
+.view{display:none}
+.view.on{display:block}
+.lede{color:var(--dim);max-width:64ch;margin:0 0 22px;font-size:14.5px}
+.lede b{color:var(--text);font-weight:500}
+
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 20px;align-items:center}
+.controls input[type="text"]{flex:1 1 180px;background:var(--panel);border:1px solid var(--line);
+ color:var(--text);border-radius:3px;padding:9px 11px;font:400 13px "Public Sans",sans-serif}
+.controls input::placeholder{color:var(--dim)}
+.controls select{background:var(--panel);border:1px solid var(--line);color:var(--text);
+ border-radius:3px;padding:9px 10px;font:400 13px "Public Sans",sans-serif}
+.chiprow{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font:600 11px "JetBrains Mono",monospace;background:var(--panel);border:1px solid var(--line);
+ color:var(--dim);padding:7px 11px;border-radius:14px;cursor:pointer;white-space:nowrap}
+.chip:hover{color:var(--text)}
+.chip.on{background:var(--straw);color:#22190A;border-color:var(--straw)}
+.resultcount{font:400 12px "JetBrains Mono",monospace;color:var(--dim);margin:0 0 14px}
+
+/* Database grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:4px;overflow:hidden;
+ display:flex;flex-direction:column}
+.cardtop{display:flex;gap:11px;padding:12px 12px 0}
+.shot{flex:none;width:44px;height:62px;border-radius:2px;background:#F3F3F0;
+ display:flex;align-items:center;justify-content:center;overflow:hidden}
+.shot img{width:100%;height:100%;object-fit:contain;display:block}
+.shot.blank{background:linear-gradient(#1A241E,#131A16);border:1px solid var(--line);position:relative}
+.shot.blank .btl{width:14px;height:40px;border-radius:7px 7px 2px 2px;background:var(--dim);position:relative}
+.shot.blank .btl::before{content:"";position:absolute;top:-8px;left:4.5px;width:5px;height:9px;
+ border-radius:2px;background:var(--dim)}
+.cname{font-size:14px;color:var(--text);margin:0 0 3px;font-weight:500;line-height:1.3}
+.cmeta{font:400 11px/1.5 "JetBrains Mono",monospace;color:var(--dim)}
+.cbody{padding:10px 12px 12px;flex:1 1 auto;display:flex;flex-direction:column}
+.cprice{font:700 13px "Fraunces",Georgia,serif;color:var(--straw);margin-left:auto;flex:none}
+.cbadge{font:700 9px/1 "JetBrains Mono",monospace;padding:3px 6px;border-radius:2px;flex:none}
+.cbadge.hit{background:var(--hit);color:#12200F}
+.cbadge.ok{background:var(--straw);color:#22190A}
+.ctags{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.ctag{font-size:10.5px;color:var(--dim);background:var(--panel-2);border:1px solid var(--line);
+ padding:3px 6px;border-radius:2px}
+
+/* Row list (Hitlist / Next Order) */
+.row{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--stone);
+ border-radius:3px;margin-bottom:8px;padding:13px 15px;cursor:default}
+.row.pick{cursor:pointer;transition:border-color .12s ease}
+.row.pick.selected{border-left-color:var(--hit);background:var(--panel-2)}
+.rtop{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.rname{font-size:15px;color:var(--text);margin:0 0 3px;font-weight:500}
+.rmeta{font:400 12px/1.5 "JetBrains Mono",monospace;color:var(--dim)}
+.rprice{flex:none;text-align:right;font:700 14px "Fraunces",Georgia,serif;color:var(--text);white-space:nowrap}
+.rprice.unpriced{font:400 12px "Public Sans",sans-serif;color:var(--dim);font-style:italic}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.tag{font:700 9px/1 "JetBrains Mono",monospace;padding:4px 7px;border-radius:2px;white-space:nowrap}
+.t-match{background:var(--stone);color:#0F1720}
+.t-loyal{background:var(--straw);color:#22190A}
+.t-unfound{background:var(--panel-2);color:var(--dim);border:1px solid var(--line)}
+.t-daytoday{background:var(--stone);color:#0F1720}
+.t-lush{background:var(--straw);color:#22190A}
+.t-fancy{background:var(--rose);color:#2A0F14}
+.t-lotto{background:var(--hit);color:#12200F}
+.t-unknown{background:var(--flag);color:#2A1608}
+.t-reorder{background:var(--hit);color:#12200F}
+.t-new{background:var(--stone);color:#0F1720}
+.rnote{margin:9px 0 0;font-size:13px;color:var(--dim);line-height:1.55}
+.check{flex:none;width:20px;height:20px;border-radius:4px;border:1.5px solid var(--line);
+ display:flex;align-items:center;justify-content:center;margin-top:1px}
+.row.pick.selected .check{background:var(--hit);border-color:var(--hit)}
+.check svg{display:none;width:12px;height:12px}
+.row.pick.selected .check svg{display:block}
+
+h2{font:600 12px/1 "JetBrains Mono",monospace;letter-spacing:.16em;text-transform:uppercase;
+ color:var(--straw);margin:30px 0 6px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+h2:first-child{margin-top:0}
+h2.r{color:var(--rose);border-color:var(--rose)}
+h2.red{color:var(--red2);border-color:var(--red2)}
+
+/* Next Order dock */
+.dock{position:fixed;left:0;right:0;bottom:0;background:rgba(20,28,24,.97);
+ border-top:1px solid var(--line);backdrop-filter:blur(8px);padding:11px 16px;
+ display:none;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;z-index:5}
+.dock.show{display:flex}
+.dock p{margin:0;font:400 12px/1.3 "JetBrains Mono",monospace;color:var(--dim)}
+.dock button{font:700 13px/1 "Public Sans",sans-serif;background:var(--straw);color:#22190A;
+ border:0;border-radius:2px;padding:12px 18px;cursor:pointer}
+.dock button:disabled{opacity:.35;cursor:not-allowed}
+textarea{width:100%;height:170px;margin-top:14px;background:var(--panel);color:var(--text);
+ border:1px solid var(--line);border-radius:3px;padding:12px;
+ font:400 12px/1.5 "JetBrains Mono",monospace;display:none}
+
+/* Patterns tab */
+.pattern{background:var(--panel);border:1px solid var(--line);border-radius:3px;
+ padding:16px 16px 15px;margin-bottom:12px}
+.phead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:8px}
+.pclaim{font-size:15px;line-height:1.4;color:var(--text);margin:0;font-weight:500;max-width:48ch}
+.pill{flex:none;font:700 9px/1 "JetBrains Mono",monospace;text-transform:uppercase;
+ padding:5px 8px;border-radius:12px;letter-spacing:.04em;white-space:nowrap}
+.pill.confirmed{background:var(--hit);color:#12200F}
+.pill.strong{background:var(--straw);color:#22190A}
+.pill.moderate{background:var(--flag);color:#2A1608}
+.pill.emerging{background:var(--stone);color:#0F1720}
+.evrow{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0}
+.evchip{font:400 12px/1.3 "Public Sans",sans-serif;padding:5px 9px;border-radius:2px;border:1px solid var(--line)}
+.evchip.sup{background:rgba(127,191,122,.1);color:#A9D6A5;border-color:rgba(127,191,122,.3)}
+.evchip.con{background:rgba(212,115,107,.1);color:#E4A29C;border-color:rgba(212,115,107,.3)}
+.evlabel{font:700 9px/1 "JetBrains Mono",monospace;color:var(--dim);text-transform:uppercase;
+ letter-spacing:.08em;margin:12px 0 5px;display:block}
+.pnote{margin:12px 0 0;padding:10px 11px;background:var(--panel-2);border-left:2px solid var(--dim);
+ border-radius:0 2px 2px 0;font-size:13px;line-height:1.55;color:var(--dim)}
+.popen{margin:8px 0 0;padding:10px 11px;background:rgba(224,150,75,.08);border-left:2px solid var(--flag);
+ border-radius:0 2px 2px 0;font-size:13px;line-height:1.55;color:var(--dim)}
+.popen b{color:var(--flag);font-weight:600}
+.ask{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--straw);
+ border-radius:3px;padding:13px 15px;margin-bottom:8px}
+.ask .title{font-size:14.5px;color:var(--text);font-weight:500;margin:0 0 4px}
+.ask .desc{font-size:13px;color:var(--dim);line-height:1.5;margin:0}
+.ask .desc b{color:var(--text);font-weight:500}
+
+.foot{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
+ font-size:12px;color:var(--dim);line-height:1.6}
+.foot code{background:var(--panel-2);padding:1px 5px;border-radius:2px;font-size:11px}
+.empty{color:var(--dim);font-size:13.5px;padding:24px 0;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="eyebrow">Cellar · example data</p>
+  <h1>Everything in <em>one place</em>.</h1>
+
+  <nav class="tabs">
+    <button data-tab="db" class="on">Database</button>
+    <button data-tab="hitlist">Hitlist</button>
+    <button data-tab="next">Next Order</button>
+    <button data-tab="patterns">Patterns</button>
+  </nav>
+
+  <section id="view-db" class="view on">
+    <p class="lede">Every wine that's actually worked — <b>hit</b> or <b>ok</b> — browsable by cultivar, producer, or region. Misses aren't here; this is the "what's good" reference. <b>This demo is seeded with fictional example wines</b>, not real ratings — see README.md.</p>
+    <div class="controls">
+      <input type="text" id="dbsearch" placeholder="Search by name or producer…">
+      <select id="dbstyle"><option value="">All cultivars/styles</option></select>
+      <select id="dbproducer"><option value="">All producers</option></select>
+      <select id="dbregion"><option value="">All regions</option></select>
+      <select id="dbtier">
+        <option value="">All tiers</option>
+      </select>
+    </div>
+    <div class="chiprow" style="margin:0 0 10px">
+      <span class="chip on" data-verdict="hit,ok">Hit + OK</span>
+      <span class="chip" data-verdict="hit">Hits only</span>
+    </div>
+    <p class="resultcount" id="dbcount"></p>
+    <div class="grid" id="dbgrid"></div>
+  </section>
+
+  <section id="view-hitlist" class="view">
+    <p class="lede">Wines you haven't tried yet, chosen against live palate patterns or a producer who's already earned trust — cross-referenced to the four spending tiers in <code>wine/data/budget.md</code>. Not tied to current stock: this is what to watch for wherever it turns up.</p>
+    <div class="chiprow" id="hitlistBudgetChips" style="margin:0 0 20px">
+      <span class="chip on" data-budget="all">All</span>
+      <span class="chip" data-budget="unknown" id="hitlistUnknownChip">Price unknown</span>
+    </div>
+    <div id="hitlistbody"></div>
+  </section>
+
+  <section id="view-next" class="view">
+    <p class="lede">Step 1 of building the next order: a long list, not a fixed cart. Pick a budget tier for this round, then tap what you're actually interested in — proven hits worth reordering, or Hitlist wishlist wines you'd like to try. Then hit <b>Copy for Claude</b> and paste your picks into a chat with Claude — it can research current stock and pricing for exactly those, targeting your chosen tier, and come back with a real proposal.</p>
+    <p class="evlabel" style="margin:0 0 8px">Budget tier for this round</p>
+    <div class="chiprow" id="tierpicker" style="margin:0 0 24px"></div>
+    <h2>Worth reordering <span id="reordercount"></span></h2>
+    <div id="reorderbody"></div>
+    <h2 class="r">Worth trying <span id="trycount"></span></h2>
+    <div id="trybody"></div>
+    <textarea id="nextout" readonly aria-label="Selections summary"></textarea>
+  </section>
+
+  <section id="view-patterns" class="view">
+    <p class="lede">Confidence runs confirmed → strong → moderate → emerging. A pattern moves down when a new verdict contradicts it — that's the system working, not a failure.</p>
+    <h2>Patterns</h2>
+    <div id="patternsbody"></div>
+    <h2>Standing asks</h2>
+    <div id="asksbody"></div>
+  </section>
+
+  <div class="foot">
+    Source: <code>wine/data/ratings.json</code>, <code>wine/data/palate.json</code>, <code>wine/data/budget.md</code>. Flavor/ABV/blend metadata from external reference sites — discovery information only, never a substitute for a stated verdict. Redeploy this same artifact when the underlying data changes rather than creating a new one. This copy ships with fictional example data — see the repo README before mistaking any of it for a real recommendation.
+  </div>
+</div>
+
+<div class="dock" id="nextdock">
+  <p id="nextcount">0 selected</p>
+  <button id="nextcopy" disabled>Copy for Claude</button>
+</div>
+
+<script>
+const WINES = [{"name": "Copper Finch Sauvignon Blanc", "producer": "Copper Finch Estate", "style": "sauvignon blanc", "region": "Durbanville", "verdict": "hit", "price": 95, "flavor_descriptors": ["gooseberry", "granadilla", "cut grass", "citrus zest"], "abv": "13.2%", "blend": "100% Sauvignon Blanc", "image": null}, {"name": "Windrift Chenin Blanc", "producer": "Windrift Cellars", "style": "chenin blanc", "region": "Swartland", "verdict": "hit", "price": 110, "flavor_descriptors": ["white peach", "honeyed citrus", "flinty minerality"], "abv": "13.5%", "blend": "100% Chenin Blanc", "image": null}, {"name": "Thornfield Cinsault", "producer": "Thornfield Wines", "style": "cinsault", "region": "Stellenbosch", "verdict": "hit", "price": 135, "flavor_descriptors": ["red cherry", "cracked pepper", "soft tannins"], "abv": "12.8%", "blend": "100% Cinsault", "image": null}, {"name": "Harbourlight Rosé", "producer": "Harbourlight Wines", "style": "rose", "region": "Franschhoek", "verdict": "ok", "price": 90, "flavor_descriptors": null, "abv": null, "blend": null, "image": null}, {"name": "Millbrook Chardonnay", "producer": "Millbrook Estate", "style": "chardonnay", "region": "Elgin", "verdict": "ok", "price": null, "flavor_descriptors": null, "abv": null, "blend": null, "image": null}];
+const HITLIST = [{"name": "Fernwood Sauvignon Blanc", "meta": "Elgin", "category": "Sauvignon Blanc", "price": 105, "vendor": "example vendor, in stock", "why": "Cool-climate Elgin fruit — same family as the confirmed-hit Copper Finch SB."}, {"name": "Saltmarsh Rosé", "meta": "Walker Bay", "category": "Rosé", "price": 140, "vendor": null, "why": "Described as bone-dry and Provence-styled — a closer test of the dry-rosé pattern than Harbourlight."}, {"name": "Amberlane Cinsault", "meta": "Wellington", "category": "Red", "price": 150, "vendor": "example vendor, in stock", "why": "Same light-bodied, low-tannin profile as the confirmed-hit Thornfield Cinsault."}];
+const PATTERNS = [{"claim": "Example pattern: cool-climate Sauvignon Blanc lands more often than warmer inland examples.", "status": "emerging", "supporting": ["Copper Finch Sauvignon Blanc (hit, Durbanville)"], "contradicting": [], "note": "Placeholder pattern showing the schema shape - a real pattern needs several ratings pointing the same way, not one example entry.", "open": "Replace this with an actual recurring signal once you have enough ratings to see one."}, {"claim": "Reorder frequency does not indicate preference.", "status": "confirmed", "supporting": ["Kestrel Ridge Red Blend - reordered repeatedly, still rated a miss"], "note": "The one pattern that never downgrades - it's the ground rule this whole system runs on. Never infer a hit from purchase history alone."}];
+const ASKS = [{"title": "Copper Finch Sauvignon Blanc", "desc": "<b>Hit.</b> Example standing ask - keep an eye out for restock."}];
+const BUDGET = {"day_to_day":{"target":100,"low":70,"high":120},"feeling_lush":{"target":170,"low":120,"high":200},"really_fancy":{"target":290,"low":200,"high":350},"won_the_lotto":{"target":500,"low":350,"high":null}};
+const TIER_LABEL = {day_to_day:"Day-to-day", feeling_lush:"Feeling lush", really_fancy:"Really fancy", won_the_lotto:"Won the lotto"};
+const TIER_CLASS = {day_to_day:"t-daytoday", feeling_lush:"t-lush", really_fancy:"t-fancy", won_the_lotto:"t-lotto"};
+function tierOf(price){
+  if(price==null) return null;
+  if(price<=BUDGET.day_to_day.high) return "day_to_day";
+  if(price<=BUDGET.feeling_lush.high) return "feeling_lush";
+  if(price<=BUDGET.really_fancy.high) return "really_fancy";
+  return "won_the_lotto";
+}
+
+/* ---------- tier UI, generated from BUDGET so the ranges/averages below
+   are never hand-typed twice (once here, once in budget.md) ---------- */
+const TIER_ORDER=["day_to_day","feeling_lush","really_fancy","won_the_lotto"];
+function tierRangeLabel(key){
+  const b=BUDGET[key];
+  const range = b.high==null ? "R"+b.low+"+" : "R"+b.low+"-"+b.high;
+  return TIER_LABEL[key]+" ("+range+")";
+}
+function tierAvgLabel(key){
+  const b=BUDGET[key];
+  return b.high==null ? TIER_LABEL[key]+" · R"+b.low+"+" : TIER_LABEL[key]+" · R"+b.target+" avg";
+}
+const dbTierSelect=document.getElementById("dbtier");
+TIER_ORDER.forEach(key=>{
+  const o=document.createElement("option"); o.value=key; o.textContent=tierRangeLabel(key);
+  dbTierSelect.appendChild(o);
+});
+const hitlistChipsContainer=document.getElementById("hitlistBudgetChips");
+const hitlistUnknownChip=document.getElementById("hitlistUnknownChip");
+TIER_ORDER.forEach(key=>{
+  const s=document.createElement("span"); s.className="chip"; s.dataset.budget=key; s.textContent=tierRangeLabel(key);
+  hitlistChipsContainer.insertBefore(s, hitlistUnknownChip);
+});
+const tierPickerEl=document.getElementById("tierpicker");
+TIER_ORDER.forEach((key,i)=>{
+  const s=document.createElement("span"); s.className="chip"+(i===0?" on":""); s.dataset.tier=key; s.textContent=tierAvgLabel(key);
+  tierPickerEl.appendChild(s);
+});
+
+/* ---------- tabs ---------- */
+document.querySelectorAll("nav.tabs button").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll("nav.tabs button").forEach(b=>b.classList.remove("on"));
+    document.querySelectorAll(".view").forEach(v=>v.classList.remove("on"));
+    btn.classList.add("on");
+    document.getElementById("view-"+btn.dataset.tab).classList.add("on");
+    document.getElementById("nextdock").classList.toggle("show", btn.dataset.tab==="next");
+  });
+});
+
+/* ---------- image fallback ---------- */
+function shot(img){
+  const el=document.createElement("span");
+  if(!img){el.className="shot blank";el.innerHTML='<span class="btl"></span>';return el;}
+  el.className="shot";
+  const im=document.createElement("img"); im.alt=""; im.loading="lazy"; im.src=img;
+  im.addEventListener("error",()=>{el.className="shot blank";el.innerHTML='<span class="btl"></span>';});
+  el.appendChild(im); return el;
+}
+
+/* ---------- Database tab ---------- */
+const dbSearch=document.getElementById("dbsearch"), dbStyle=document.getElementById("dbstyle"),
+      dbProducer=document.getElementById("dbproducer"), dbRegion=document.getElementById("dbregion"),
+      dbTier=document.getElementById("dbtier"),
+      dbGrid=document.getElementById("dbgrid"), dbCount=document.getElementById("dbcount");
+let dbVerdicts=["hit","ok"];
+
+function fillSelect(sel, values){
+  [...new Set(values)].sort().forEach(v=>{
+    const o=document.createElement("option"); o.value=v; o.textContent=v.replace(/\b\w/g,c=>c.toUpperCase());
+    sel.appendChild(o);
+  });
+}
+fillSelect(dbStyle, WINES.map(w=>w.style));
+fillSelect(dbProducer, WINES.map(w=>w.producer));
+fillSelect(dbRegion, WINES.map(w=>w.region));
+
+function renderDB(){
+  const q=dbSearch.value.trim().toLowerCase();
+  const style=dbStyle.value, producer=dbProducer.value, region=dbRegion.value, tier=dbTier.value;
+  const filtered=WINES.filter(w=>
+    dbVerdicts.includes(w.verdict) &&
+    (!style||w.style===style) && (!producer||w.producer===producer) && (!region||w.region===region) &&
+    (!tier||tierOf(w.price)===tier) &&
+    (!q || w.name.toLowerCase().includes(q) || w.producer.toLowerCase().includes(q))
+  );
+  dbCount.textContent = filtered.length+" of "+WINES.length;
+  dbGrid.innerHTML="";
+  if(!filtered.length){ dbGrid.innerHTML='<p class="empty">Nothing matches those filters.</p>'; return; }
+  filtered.forEach(w=>{
+    const c=document.createElement("div"); c.className="card";
+    const top=document.createElement("div"); top.className="cardtop";
+    top.appendChild(shot(w.image));
+    const meta=document.createElement("div");
+    meta.innerHTML='<p class="cname">'+w.name+'</p><p class="cmeta">'+w.producer+' · '+w.region+'</p>';
+    top.appendChild(meta);
+    c.appendChild(top);
+    const body=document.createElement("div"); body.className="cbody";
+    let html='<div style="display:flex;align-items:center;gap:8px;margin-top:2px">'+
+      '<span class="cbadge '+w.verdict+'">'+w.verdict.toUpperCase()+'</span>'+
+      (w.price?'<span class="cprice">R'+w.price.toFixed(2)+'</span>':'')+'</div>';
+    const tags=[];
+    if(w.blend) tags.push(w.blend);
+    if(w.abv) tags.push(w.abv+" ABV");
+    if(w.flavor_descriptors) w.flavor_descriptors.slice(0,4).forEach(f=>tags.push(f));
+    if(tags.length) html += '<div class="ctags">'+tags.map(t=>'<span class="ctag">'+t+'</span>').join("")+'</div>';
+    body.innerHTML=html;
+    c.appendChild(body);
+    dbGrid.appendChild(c);
+  });
+}
+[dbSearch].forEach(el=>el.addEventListener("input",renderDB));
+[dbStyle,dbProducer,dbRegion,dbTier].forEach(el=>el.addEventListener("change",renderDB));
+document.querySelectorAll('.chiprow [data-verdict]').forEach(chip=>{
+  chip.addEventListener("click",()=>{
+    document.querySelectorAll('.chiprow [data-verdict]').forEach(c=>c.classList.remove("on"));
+    chip.classList.add("on");
+    dbVerdicts = chip.dataset.verdict.split(",");
+    renderDB();
+  });
+});
+renderDB();
+
+/* ---------- Hitlist tab ---------- */
+const hitBody=document.getElementById("hitlistbody");
+let budgetFilter="all";
+
+function hitRow(w){
+  const el=document.createElement("div"); el.className="row";
+  let tags='<span class="tag t-match">'+w.category+'</span>';
+  if(w.loyal) tags+='<span class="tag t-loyal">PRODUCER LOYALTY</span>';
+  if(w.price!=null){
+    const t=tierOf(w.price);
+    tags += '<span class="tag '+TIER_CLASS[t]+'">'+TIER_LABEL[t].toUpperCase()+' · R'+w.price.toFixed(2)+' ('+w.vendor+')</span>';
+  } else {
+    tags += '<span class="tag t-unknown">PRICE UNKNOWN</span>';
+  }
+  el.innerHTML = '<div class="rtop"><div><p class="rname">'+w.name+'</p><p class="rmeta">'+w.meta+'</p></div></div>'+
+    '<div class="tags">'+tags+'</div><p class="rnote">'+w.why+'</p>';
+  return el;
+}
+function renderHitlist(){
+  const filtered = HITLIST.filter(w=>{
+    if(budgetFilter==="unknown") return w.price==null;
+    if(budgetFilter==="all") return true;
+    return tierOf(w.price)===budgetFilter;
+  });
+  hitBody.innerHTML="";
+  const groups=["Sauvignon Blanc","Rosé","Red","Producer loyalty"];
+  groups.forEach(g=>{
+    const items=filtered.filter(w=>w.category===g);
+    if(!items.length) return;
+    const h=document.createElement("h2");
+    h.className = g==="Rosé" ? "r" : g==="Red" ? "red" : "";
+    h.textContent=g;
+    hitBody.appendChild(h);
+    items.forEach(w=>hitBody.appendChild(hitRow(w)));
+  });
+  if(!filtered.length) hitBody.innerHTML='<p class="empty">Nothing matches this filter.</p>';
+}
+document.querySelectorAll('.chiprow [data-budget]').forEach(chip=>{
+  chip.addEventListener("click",()=>{
+    document.querySelectorAll('.chiprow [data-budget]').forEach(c=>c.classList.remove("on"));
+    chip.classList.add("on");
+    budgetFilter=chip.dataset.budget;
+    renderHitlist();
+  });
+});
+renderHitlist();
+
+/* ---------- Next Order tab ---------- */
+const REORDER = WINES.filter(w=>w.verdict==="hit").map(w=>({
+  name:w.name, meta:w.producer+" · "+w.region+(w.price?" · was R"+w.price.toFixed(2):""), kind:"reorder"
+}));
+const TRY = HITLIST.map(w=>({ name:w.name, meta:w.meta, kind:"try" }));
+const selected={};
+const reorderBody=document.getElementById("reorderbody"), tryBody=document.getElementById("trybody");
+document.getElementById("reordercount").textContent = REORDER.length;
+document.getElementById("trycount").textContent = TRY.length;
+
+function pickRow(w){
+  const el=document.createElement("div"); el.className="row pick";
+  el.innerHTML='<div class="rtop"><div><p class="rname">'+w.name+'</p><p class="rmeta">'+w.meta+'</p></div>'+
+    '<span class="check"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="#12200F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>';
+  el.addEventListener("click",()=>{
+    el.classList.toggle("selected");
+    if(el.classList.contains("selected")) selected[w.name]=w.kind; else delete selected[w.name];
+    refreshNext();
+  });
+  return el;
+}
+REORDER.forEach(w=>reorderBody.appendChild(pickRow(w)));
+TRY.forEach(w=>tryBody.appendChild(pickRow(w)));
+
+let selectedTier="day_to_day";
+document.querySelectorAll('#tierpicker [data-tier]').forEach(chip=>{
+  chip.addEventListener("click",()=>{
+    document.querySelectorAll('#tierpicker [data-tier]').forEach(c=>c.classList.remove("on"));
+    chip.classList.add("on");
+    selectedTier=chip.dataset.tier;
+    refreshNext();
+  });
+});
+
+const nextOut=document.getElementById("nextout"), nextCopyBtn=document.getElementById("nextcopy"),
+      nextCount=document.getElementById("nextcount");
+function refreshNext(){
+  const keys=Object.keys(selected);
+  nextCount.textContent=keys.length+" selected · "+TIER_LABEL[selectedTier]+" tier";
+  nextCopyBtn.disabled=keys.length===0;
+  const reorder=keys.filter(k=>selected[k]==="reorder"), tryNew=keys.filter(k=>selected[k]==="try");
+  const b=BUDGET[selectedTier];
+  const rangeTxt = b.high==null ? "R"+b.low+"+" : "R"+b.low+"-"+b.high;
+  let t="Next order — budget tier: "+TIER_LABEL[selectedTier]+" (target R"+b.target+", range "+rangeTxt+")\n\nInterested in:\n\n";
+  if(reorder.length) t+="REORDER:\n"+reorder.map(n=>"- "+n).join("\n")+"\n\n";
+  if(tryNew.length) t+="TRY:\n"+tryNew.map(n=>"- "+n).join("\n")+"\n\n";
+  t+="Please check current stock/pricing and come back with a suggested order targeting this tier (average, not a per-bottle ceiling).";
+  nextOut.value=t.trim();
+}
+nextCopyBtn.onclick=async()=>{
+  nextOut.style.display="block";
+  try{ await navigator.clipboard.writeText(nextOut.value); nextCopyBtn.textContent="Copied — paste into chat"; }
+  catch(e){ nextCopyBtn.textContent="Select the text below and copy"; }
+  setTimeout(()=>{nextCopyBtn.textContent="Copy for Claude";},4000);
+};
+refreshNext();
+
+/* ---------- Patterns tab ---------- */
+const STATUS_LABEL={confirmed:"Confirmed",strong:"Strong",moderate:"Moderate",emerging:"Emerging"};
+const pc=document.getElementById("patternsbody");
+PATTERNS.forEach(p=>{
+  const el=document.createElement("div"); el.className="pattern";
+  let html='<div class="phead"><p class="pclaim">'+p.claim+'</p><span class="pill '+p.status+'">'+STATUS_LABEL[p.status]+'</span></div>';
+  if(p.supporting) html+='<span class="evlabel">Supporting</span><div class="evrow">'+p.supporting.map(s=>'<span class="evchip sup">'+s+'</span>').join("")+'</div>';
+  if(p.contradicting) html+='<span class="evlabel">Contradicting</span><div class="evrow">'+p.contradicting.map(s=>'<span class="evchip con">'+s+'</span>').join("")+'</div>';
+  if(p.note) html+='<p class="pnote">'+p.note+'</p>';
+  if(p.open) html+='<p class="popen"><b>Open test.</b> '+p.open+'</p>';
+  el.innerHTML=html; pc.appendChild(el);
+});
+const ac=document.getElementById("asksbody");
+ASKS.forEach(a=>{
+  const el=document.createElement("div"); el.className="ask";
+  el.innerHTML='<p class="title">'+a.title+'</p><p class="desc">'+a.desc+'</p>';
+  ac.appendChild(el);
+});
+</script>
+</body>
+</html>

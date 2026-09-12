@@ -1,0 +1,25 @@
+{
+  "id": "whisky-twins",
+  "name": "The Whisky Twins",
+  "country": "ZA",
+  "status": "active - one of two active whisky vendors alongside whisky-brother; weaker fit (higher free-shipping threshold, collector-skewed stock) so check whisky-brother first for a typical order",
+  "base_url": "https://www.whiskytwins.co.za",
+  "contact": {
+    "name": "",
+    "email": "",
+    "note": "Not yet contacted. Free in-store pickup also offered as an alternative to delivery."
+  },
+  "delivery": {
+    "free_shipping": true,
+    "threshold_zar": 1500,
+    "note": "Confirmed via homepage statement ('Free shipping over R1,500 (South Africa)') - no separate policy page was found, so this should be re-verified before relying on it. R1,500 is a high threshold relative to a typical day-to-day/feeling-lush whisky order, meaning a routine order could end up paying for shipping."
+  },
+  "constraints": [
+    "Positioned as a limited/collectable/rare whisky specialist - sampled stock skewed high (Kilchoman Sanaig R1,249.99, GlenAllachie 15YO R1,599.99, Ardbeg 25YO R23,499.99), no confirmation of broad availability at lower price points."
+  ],
+  "scraping": {
+    "category_pages": []
+  },
+  "product_urls": {},
+  "evaluation_note": "Kept as a candidate rather than rejected outright, but Whisky Brother is the stronger fit - lower free-shipping threshold and a real price spread reaching further down toward a typical day-to-day budget rather than a collector-focused range."
+}

@@ -1,0 +1,11 @@
+{
+  "active": true,
+  "vendor": "getwine",
+  "budget": {
+    "see": "wine/data/budget.md",
+    "note": "The four spending tiers live in budget.md. The day-to-day tier is an average across an order, not a per-bottle ceiling - that rule applies inside whichever tier is selected."
+  },
+  "shipping": "ignore - orders always qualify for free delivery",
+  "intent": "drink-now, not cellaring",
+  "typical_order": "example: 4 cases / 24 bottles, near-monthly - set this to whatever fits how you actually buy"
+}

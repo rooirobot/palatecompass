@@ -1,0 +1,36 @@
+{
+  "id": "getwine",
+  "name": "GetWine",
+  "country": "ZA",
+  "status": "active - current preference, NOT an exclusive commitment",
+  "base_url": "https://www.getwine.co.za",
+  "contact": {
+    "name": "",
+    "email": "",
+    "note": "Orders have historically been placed by emailing a contact at the vendor directly rather than through website checkout - worth asking about when you reach out."
+  },
+  "delivery": {
+    "free_shipping": true,
+    "note": "Orders always qualify. Treat shipping as zero when comparing."
+  },
+  "constraints": [
+    "Cannot sell single bottles. Minimum 6 of any one wine.",
+    "Mixed 'create your own' cases go in 2-bottle multiples.",
+    "Vendor has given inconsistent guidance on whether mixed cases are allowed at all - confirm before building an order around them.",
+    "Vendor substitutes freely when stock is short and does not always confirm first. Expect the delivered order to differ from the specified one."
+  ],
+  "scraping": {
+    "image_cdn": "https://mlas0hkwxpch.i.optimole.com/cb:krhC.37880/w:300/h:400/q:mauto/f:best/ig:avif/https://www.getwine.co.za/wp-content/uploads/",
+    "image_direct": "https://www.getwine.co.za/wp-content/uploads/",
+    "note": "Hotlinked images have failed to render in some environments. Always implement a fallback chain: CDN -> direct -> CSS placeholder.",
+    "category_pages": [
+      "/category/labelled-wine/white-wine/sauvignon-blanc/",
+      "/category/labelled-wine/rose-wine/",
+      "/category/labelled-wine/red-wine/cinsaut/",
+      "/category/wine-specials/newsletter/"
+    ],
+    "category_pages_note": "Category page paths on retailer sites drift as they restructure - re-verify before relying on them for a research pass."
+  },
+  "product_urls": {},
+  "url_note": "Product slugs on this vendor's site have carried stale vintages and outright typos before. Do not construct slugs by guessing - search first and store the verified URL."
+}

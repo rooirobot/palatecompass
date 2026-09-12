@@ -1,0 +1,22 @@
+{
+  "id": "vendor-slug",
+  "name": "",
+  "country": "ZA",
+  "status": "candidate",
+  "base_url": "",
+  "contact": {
+    "name": "",
+    "email": "",
+    "note": ""
+  },
+  "delivery": {
+    "free_shipping": null,
+    "threshold_zar": null,
+    "note": "Free delivery is a hard requirement for comparison."
+  },
+  "constraints": [],
+  "scraping": {
+    "category_pages": []
+  },
+  "product_urls": {}
+}

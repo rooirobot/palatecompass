@@ -1,0 +1,30 @@
+{
+  "last_reviewed": "2026-09-12",
+  "confidence": "example only - built from 6 illustrative ratings, not a real pattern",
+  "category_split_observed": {
+    "sauvignon_blanc": "example placeholder - track whatever your own data shows",
+    "rose": "example placeholder"
+  },
+  "patterns": [
+    {
+      "id": "cool-climate-sb-example",
+      "claim": "Example pattern: cool-climate Sauvignon Blanc lands more often than warmer inland examples.",
+      "supporting": [
+        "Copper Finch Sauvignon Blanc (hit, Durbanville)"
+      ],
+      "contradicting_examples": [],
+      "status": "emerging",
+      "note": "This is a placeholder pattern showing the schema shape - a real pattern needs several ratings pointing the same way, not one example entry. See METHODOLOGY.md rule 5: patterns are hypotheses, not laws, and a thin sample should say so plainly.",
+      "open_test": "Replace this with an actual recurring signal once you have enough ratings to see one."
+    },
+    {
+      "id": "reorder-is-not-preference-example",
+      "claim": "Reorder frequency does NOT indicate preference.",
+      "status": "confirmed",
+      "supporting": [
+        "Kestrel Ridge Red Blend - reordered repeatedly, still rated a miss"
+      ],
+      "implication": "Never infer a hit from purchase history alone. Only an explicit stated verdict counts - this is METHODOLOGY.md rule 1 restated as a pattern, and it never downgrades."
+    }
+  ]
+}

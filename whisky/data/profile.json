@@ -1,0 +1,9 @@
+{
+  "active": true,
+  "vendor": ["whisky-brother", "whisky-twins"],
+  "budget": {
+    "see": "whisky/data/budget.md",
+    "note": "The four spending tiers live in budget.md, same formula as wine's."
+  },
+  "status": "Example profile - two vendors scaffolded as candidates/active in vendors/, matched against a whisky buyer's typical price range. Adjust to your own vendor findings."
+}

@@ -1,0 +1,29 @@
+{
+  "id": "port2port",
+  "name": "Port2Port",
+  "country": "ZA",
+  "status": "candidate",
+  "base_url": "https://www.port2port.wine",
+  "contact": {
+    "name": "",
+    "email": "help@port2port.wine",
+    "note": "Not yet contacted."
+  },
+  "delivery": {
+    "free_shipping": "conditional",
+    "threshold_zar": 1500,
+    "note": "A marketplace of many producers/vendors, not one retailer. Standard shipping is ~R110 nationwide; many individual sellers on the marketplace waive it above roughly R1,500-1,750. Free shipping is NOT a blanket guarantee the way it is at GetWine - must be checked per seller within a cart, not assumed."
+  },
+  "constraints": [
+    "Both mixed cases and single bottles available, unlike GetWine's 6-bottle minimum.",
+    "SA wine bottle prices seen: R165-R370 typical, running a bit above a typical day-to-day wine budget - would need singles/specials to balance the average.",
+    "South African fulfilment runs through Norman Goodfellows' warehouses - see vendors/norman-goodfellows.json. Ordering direct from NGF may be simpler than via this marketplace layer.",
+    "1-2 business days to main centres, 3-4 to outlying areas."
+  ],
+  "scraping": {
+    "category_pages": [
+      "/wines/south-africa"
+    ]
+  },
+  "product_urls": {}
+}

@@ -1,0 +1,28 @@
+{
+  "id": "norman-goodfellows",
+  "name": "Norman Goodfellows",
+  "country": "ZA",
+  "status": "candidate",
+  "base_url": "https://www.ngf.co.za",
+  "contact": {
+    "name": "",
+    "email": "",
+    "note": "Not yet contacted."
+  },
+  "delivery": {
+    "free_shipping": true,
+    "threshold_zar": 1500,
+    "note": "Free delivery over R1,500, but capped at 6kg / 6 bottles PER DELIVERY. Unclear whether a 24-bottle order ships as one delivery or several, and whether each additional 6-bottle batch incurs its own fee - MUST confirm before relying on this vendor for a full order. Does not deliver to high-risk/township areas."
+  },
+  "constraints": [
+    "All cart items must be available in the same region as the shipping address.",
+    "Also fulfils Port2Port's South African orders from the same warehouses - see port2port.json in this same folder. Treat the two as related, not fully independent, when comparing.",
+    "Also sells via a Takealot storefront - not evaluated as a separate channel."
+  ],
+  "scraping": {
+    "category_pages": [
+      "/product-category/wine/red/"
+    ]
+  },
+  "product_urls": {}
+}

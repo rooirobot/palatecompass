@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "last_updated": "2026-09-12",
+  "verdict_scale": [
+    "hit",
+    "ok",
+    "miss"
+  ],
+  "rule": "A whisky enters this file ONLY on an explicit verdict from the owner. Never infer one from other tasters' scores, group averages, or any 'top pick' highlighting - only the owner's own stated score/verdict counts. See METHODOLOGY.md rule 1 and docs/importing-tasting-data.md.",
+  "count": 4,
+  "whiskies": [
+    {
+      "name": "Ember Glen 12 Year",
+      "type": "Single Malt",
+      "verdict": "hit",
+      "category": "whisky",
+      "note": "Example entry.",
+      "distillery": "Ember Glen Distillery",
+      "region": "Speyside, Scotland",
+      "cask": "Ex-bourbon, first fill",
+      "age_years": 12,
+      "abv": "43%",
+      "flavor_descriptors": [
+        "honeyed malt",
+        "orchard fruit",
+        "vanilla oak"
+      ]
+    },
+    {
+      "name": "Thistledown Cask Reserve",
+      "type": "Single Malt",
+      "verdict": "hit",
+      "category": "whisky",
+      "note": "Example entry.",
+      "distillery": "Thistledown Distillery",
+      "region": "Islay, Scotland",
+      "cask": "Sherry butt finish",
+      "age_statement": "NAS",
+      "abv": "46%",
+      "flavor_descriptors": [
+        "peat smoke",
+        "dried fruit",
+        "brine"
+      ]
+    },
+    {
+      "name": "Northgate Blend",
+      "type": "Blended",
+      "verdict": "ok",
+      "category": "whisky",
+      "note": "Example entry - fine, not a reorder priority."
+    },
+    {
+      "name": "Ravensbrook 8 Year",
+      "type": "Single Malt",
+      "verdict": "miss",
+      "category": "whisky",
+      "note": "Example entry."
+    }
+  ]
+}

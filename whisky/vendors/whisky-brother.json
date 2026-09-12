@@ -1,0 +1,26 @@
+{
+  "id": "whisky-brother",
+  "name": "Whisky Brother",
+  "country": "ZA",
+  "status": "active - one of two active whisky vendors alongside whisky-twins",
+  "base_url": "https://www.whiskybrother.com",
+  "contact": {
+    "name": "",
+    "email": "",
+    "note": "Not yet contacted. Physical store in Hyde Park, Johannesburg, with free in-store collection as an alternative to delivery."
+  },
+  "delivery": {
+    "free_shipping": true,
+    "threshold_zar": 1200,
+    "note": "Confirmed via https://www.whiskybrother.com/pages/delivery-details : orders R1,200+ ship free nationwide (Gauteng included); under that, a flat R150 courier fee applies."
+  },
+  "constraints": [
+    "SA delivery addresses only for the free tier - international shipping exists but is explicitly expensive/discouraged.",
+    "Not yet confirmed: minimum bottle count per order, case/mixed-case rules."
+  ],
+  "scraping": {
+    "category_pages": []
+  },
+  "product_urls": {},
+  "evaluation_note": "Stock breadth confirmed strong across Scotch/Irish/Japanese categories: 231 Scotch single malt SKUs (Ardbeg R690-R39,000, Glenmorangie R530-R3,500 incl. the 12YO at R640, Talisker R1,110-R15,000, Aberlour R1,150-R2,895 incl. 12YO at R1,150), 43 Irish SKUs R290-R2,930 (Redbreast 12YO R1,570, Tullamore Dew confirmed in stock), 15 Japanese SKUs (Hibiki Harmony R2,250, Nikka From The Barrel R6,300+ as a set, Kamiki R1,200-R1,320, plus Suntory Toki R615). Real price spread from ~R500 to ~R2,000+ gives headroom both above and below a typical whisky buyer's day-to-day/feeling-lush range."
+}

@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "last_updated": "2026-09-12",
+  "verdict_scale": [
+    "hit",
+    "ok",
+    "miss"
+  ],
+  "rule": "A wine enters this file ONLY on an explicit verdict from the owner. Never infer a verdict from purchase frequency. See METHODOLOGY.md rule 1.",
+  "count": 6,
+  "wines": [
+    {
+      "name": "Copper Finch Sauvignon Blanc",
+      "producer": "Copper Finch Estate",
+      "style": "sauvignon blanc",
+      "region": "Durbanville",
+      "verdict": "hit",
+      "category": "wine",
+      "note": "Example entry. Bright, textbook cool-climate SB - the kind of profile a repeat hit gets built around.",
+      "flavor_descriptors": [
+        "gooseberry",
+        "granadilla",
+        "cut grass",
+        "citrus zest"
+      ],
+      "abv": "13.2%",
+      "blend": "100% Sauvignon Blanc"
+    },
+    {
+      "name": "Windrift Chenin Blanc",
+      "producer": "Windrift Cellars",
+      "style": "chenin blanc",
+      "region": "Swartland",
+      "verdict": "hit",
+      "category": "wine",
+      "note": "Example entry.",
+      "flavor_descriptors": [
+        "white peach",
+        "honeyed citrus",
+        "flinty minerality"
+      ],
+      "abv": "13.5%",
+      "blend": "100% Chenin Blanc"
+    },
+    {
+      "name": "Thornfield Cinsault",
+      "producer": "Thornfield Wines",
+      "style": "cinsault",
+      "region": "Stellenbosch",
+      "verdict": "hit",
+      "category": "wine",
+      "note": "Example entry - a lighter-bodied red hit, illustrating that 'red' isn't a single monolithic style in the Database tab.",
+      "flavor_descriptors": [
+        "red cherry",
+        "cracked pepper",
+        "soft tannins"
+      ],
+      "abv": "12.8%",
+      "blend": "100% Cinsault"
+    },
+    {
+      "name": "Harbourlight Rosé",
+      "producer": "Harbourlight Wines",
+      "style": "rose",
+      "region": "Franschhoek",
+      "verdict": "ok",
+      "category": "wine",
+      "note": "Example entry - decent but unremarkable, the kind of 'ok' that keeps a wine off the Hitlist without ruling it out entirely."
+    },
+    {
+      "name": "Millbrook Chardonnay",
+      "producer": "Millbrook Estate",
+      "style": "chardonnay",
+      "region": "Elgin",
+      "verdict": "ok",
+      "category": "wine"
+    },
+    {
+      "name": "Kestrel Ridge Red Blend",
+      "producer": "Kestrel Ridge",
+      "style": "red blend",
+      "region": "Paarl",
+      "verdict": "miss",
+      "category": "wine",
+      "note": "Example entry illustrating rule 1: reordered several times before this verdict was ever asked for - reorder frequency is not preference, and the explicit verdict here is a miss regardless of how often it was bought."
+    }
+  ]
+}

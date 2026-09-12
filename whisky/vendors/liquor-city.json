@@ -1,0 +1,25 @@
+{
+  "id": "liquor-city",
+  "name": "Liquor City",
+  "country": "ZA",
+  "status": "candidate - proposed as a whisky vendor, shipping terms NOT yet confirmed",
+  "base_url": "https://shop.liquorcity.co.za",
+  "contact": {
+    "name": "",
+    "email": "orders@liquorcity.co.za",
+    "note": "Found via web search, not yet used. The shop site (shop.liquorcity.co.za) is JS-rendered and did not yield a readable delivery/shipping policy via automated fetch. Needs a manual check or a direct question to this address."
+  },
+  "delivery": {
+    "free_shipping": null,
+    "threshold_zar": null,
+    "note": "UNCONFIRMED. Do not treat as active until this is resolved - free delivery is a hard requirement for any new vendor, not just a nice-to-have. A same-day delivery option (Johannesburg area, expanding) was mentioned in search results but no policy page could be read directly."
+  },
+  "constraints": [
+    "Unconfirmed: minimum bottles per order, mixed-case rules, national vs Gauteng-only delivery."
+  ],
+  "scraping": {
+    "category_pages": [],
+    "note": "Not yet scraped - shop.liquorcity.co.za appears to be a JS-rendered storefront that returns no usable content to a plain fetch. May need a different approach (e.g. a headless browser) or manual price checks."
+  },
+  "product_urls": {}
+}

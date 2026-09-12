@@ -1,0 +1,26 @@
+{
+  "id": "vinty",
+  "name": "Vinty Wines",
+  "country": "ZA",
+  "status": "candidate",
+  "base_url": "https://vinty.co.za",
+  "contact": {
+    "name": "",
+    "email": "",
+    "note": "Not yet contacted. Liquor license WCP/043435."
+  },
+  "delivery": {
+    "free_shipping": true,
+    "threshold_zar": 1500,
+    "note": "Free delivery on cases over R1,500. A typical ~24-bottle order clears this easily, but check whether smaller top-up orders would not."
+  },
+  "constraints": [
+    "Mixed cases offered, alongside curated single-producer cases (e.g. 'Shiraz Top 12').",
+    "Bottle range seen: R107-R220, fits a typical day-to-day wine budget well.",
+    "Not yet confirmed: minimum bottle count per mixed case, whether singles can be bought outside a case."
+  ],
+  "scraping": {
+    "category_pages": []
+  },
+  "product_urls": {}
+}
