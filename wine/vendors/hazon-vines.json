@@ -1,0 +1,32 @@
+{
+  "id": "hazon-vines",
+  "name": "Hazon Vines",
+  "country": "ZA",
+  "status": "candidate",
+  "base_url": "https://hazonvines.co.za",
+  "contact": {
+    "name": "",
+    "email": "",
+    "note": "Not yet contacted. Boutique estate in Broederstroom, Hartbeespoort, under the Magalies Mountains. Contact details are on the site's contact page; no generic business alias was confirmed, so none recorded here."
+  },
+  "delivery": {
+    "free_shipping": true,
+    "threshold_zar": 1150,
+    "note": "Free delivery on orders over R1,150 anywhere in South Africa via The Courier Guy (per the Cabernet Franc 2022 product page). Free collection from the estate is also offered. A ~24-bottle order clears the threshold easily; check whether a small top-up order would not. A dedicated delivery page was not found (404), so the threshold is confirmed from the product page only."
+  },
+  "constraints": [
+    "Recommended by the contributor as a strong vendor: a boutique, single-estate producer rather than a bottle-shop reseller.",
+    "House flagship and contributor's personal favourite from the range: Cabernet Franc 2022 (100% Cabernet Franc, SKU HV-CBF-2022), R450 per bottle, with 10% off a case of 6 (R2,430).",
+    "Range seen: reds (incl. Cabernet Franc, Shiraz, Cabernet Sauvignon, Merlot, Pinotage, Cinsault), whites (Chardonnay, Sauvignon Blanc, Chenin Blanc) and rosé. Red prices run roughly R195 per bottle up to a case at R2,052; whites roughly R125 per bottle up to a case at R1,188.",
+    "Price fit: entry bottles sit near a day-to-day budget, while the flagship Cabernet Franc is a 'feeling lush' tier bottle; budget-as-average (METHODOLOGY rule 2) applies, so pair it with cheaper bottles in the same order.",
+    "Not yet confirmed: whether single bottles ship free below the threshold, and stock levels per vintage."
+  ],
+  "scraping": {
+    "category_pages": [
+      "https://hazonvines.co.za/shop"
+    ]
+  },
+  "product_urls": {
+    "cabernet-franc-2022": "https://hazonvines.co.za/product/cabernet-franc-2022/"
+  }
+}
