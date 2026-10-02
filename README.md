@@ -20,7 +20,7 @@ Two things worth knowing up front:
   you'll need your own vendor research.
 - **Only wine has a built artifact so far** (`wine/templates/cellar.html`,
   seeded here with fictional example data). Whisky has its schema, budget
-  tiers, and two scaffolded vendors, but no dashboard yet — a good first
+  tiers, and scaffolded vendors, but no dashboard yet — a good first
   contribution for someone who wants one.
 
 ## What this actually is
@@ -60,10 +60,10 @@ up in it.
 
 ## Contributing
 
-See `CONTRIBUTING.md`. Submitting a new vendor file for a real South
-African retailer you've vetted is one of the easiest and most welcome
-first contributions - the more "hidden gem" vendors in here, the better
-this gets for everyone using it.
+See `CONTRIBUTING.md`. Contributions that improve the tool itself are
+welcome: dashboards (whisky doesn't have one yet), skills, schema changes,
+docs and bug fixes. Vendor lists, ratings and palate data are personal to
+each copy of this repo, so they aren't accepted as contributions.
 
 ## License
 
