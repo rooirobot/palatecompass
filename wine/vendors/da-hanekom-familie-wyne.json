@@ -1,0 +1,31 @@
+{
+  "id": "da-hanekom-familie-wyne",
+  "name": "DA Hanekom Familie Wyne",
+  "country": "ZA",
+  "status": "candidate",
+  "base_url": "https://dahfamiliewyne.com",
+  "contact": {
+    "name": "",
+    "email": "info@dahfamiliewyne.com",
+    "note": "Not yet contacted. Family-owned producer selling direct, based in Cape Town (Kapenhoek Rd area, 7550). Generic info@ alias taken from the site's contact page."
+  },
+  "delivery": {
+    "free_shipping": null,
+    "threshold_zar": null,
+    "note": "UNCONFIRMED. No shipping policy, courier, threshold or FAQ page was found on the shop page, a product page or the contact page. Free delivery is a hard requirement, so this needs a direct enquiry before the vendor can be considered. Silence on the site is not evidence that shipping is not free."
+  },
+  "constraints": [
+    "Small direct-from-producer catalogue: only five wines listed at time of scraping, three of them sold out (Langrug 2022, Putfontein Pinotage 2021, Witteberg 2023). In stock: Klipmuur 2024 (Sauvignon Blanc, R180) and Dorsland Pinot Chardonnay sparkling (R190).",
+    "Bottle range seen: R180-R200, which fits a typical day-to-day wine budget; budget-as-average (METHODOLOGY rule 2) applies.",
+    "Thin stock risk: with so few lines available, a multi-bottle order may be limited to one or two wines.",
+    "Not yet confirmed: free shipping and any threshold, courier, delivery-area exclusions, minimum order, whether stock is restocked regularly."
+  ],
+  "scraping": {
+    "category_pages": [
+      "https://dahfamiliewyne.com/shop/"
+    ]
+  },
+  "product_urls": {
+    "klipmuur-2024": "https://dahfamiliewyne.com/product/da-hanekom-klipmuur-2024/"
+  }
+}
