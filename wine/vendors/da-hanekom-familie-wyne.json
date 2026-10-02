@@ -18,6 +18,7 @@
     "Small direct-from-producer catalogue: only five wines listed at time of scraping, three of them sold out (Langrug 2022, Putfontein Pinotage 2021, Witteberg 2023). In stock: Klipmuur 2024 (Sauvignon Blanc, R180) and Dorsland Pinot Chardonnay sparkling (R190).",
     "Bottle range seen: R180-R200, which fits a typical day-to-day wine budget; budget-as-average (METHODOLOGY rule 2) applies.",
     "Thin stock risk: with so few lines available, a multi-bottle order may be limited to one or two wines.",
+    "Also stocked by a third-party retailer: Wine Concepts On Kloof (Cape Town), per the contributor. Worth checking whether they carry these wines with their own delivery terms, since this producer's direct shop has no confirmed free shipping. Google Maps card: https://maps.app.goo.gl/TN1wQayREFJF6aRL8. Not yet verified: which wines they hold, prices, and Wine Concepts' own delivery policy.",
     "Not yet confirmed: free shipping and any threshold, courier, delivery-area exclusions, minimum order, whether stock is restocked regularly."
   ],
   "scraping": {
