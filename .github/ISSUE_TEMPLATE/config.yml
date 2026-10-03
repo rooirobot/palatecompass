@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report something sensitive
+    url: https://github.com/rooirobot/palatecompass/security/advisories/new
+    about: Accidentally committed personal data, a credential, or a security issue. Reported privately - please don't open a public issue.

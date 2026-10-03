@@ -1,0 +1,40 @@
+name: Idea or improvement
+description: Suggest a change to the tool - a dashboard, skill, schema change or new category.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Ideas for the **tool** are welcome. Vendor files, ratings, palate data and bottle recommendations aren't accepted - see `CONTRIBUTING.md`. The project is South Africa-only for now.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What do you propose?
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Artifact / dashboard
+        - Skill
+        - Schema or new category
+        - Docs
+        - Other
+    validations:
+      required: true
+  - type: checkboxes
+    id: rules
+    attributes:
+      label: Checks
+      options:
+        - label: I've read `METHODOLOGY.md`, and this doesn't break its rules (or I've explained why it should).
+          required: true
+        - label: I'd like to work on this myself.
