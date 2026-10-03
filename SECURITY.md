@@ -10,6 +10,6 @@ the **Security** tab and choose **Report a vulnerability**. That opens a
 private advisory only visible to the repo maintainer, rather than
 broadcasting the issue publicly before it's fixed.
 
-For anything else (a bug, a feature idea, a vendor file update), a regular
+For anything else (a bug or a feature idea), a regular
 public issue or PR is exactly the right place - this process is only for
 reports that would make things worse by being public immediately.

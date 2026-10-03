@@ -1,0 +1,31 @@
+name: Bug report
+description: Something in the tooling, skills, schema or docs is broken or wrong.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! Please don't paste your personal ratings, palate data or vendor research here - describe the problem with made-up example values instead.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you do, and what went wrong?
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: input
+    id: where
+    attributes:
+      label: Where?
+      description: File, skill or artifact involved, e.g. `wine/templates/cellar.html` or the `rebuild-cellar` skill.
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else?
+      description: Screenshots, error messages, steps to reproduce.
