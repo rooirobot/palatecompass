@@ -30,7 +30,20 @@ other arrays.
    generated straight from `ratings.json`'s `hit`/`ok` entries; `HITLIST`,
    `PATTERNS`, `ASKS` are hand-authored arrays since they carry editorial
    judgment, not raw data).
-3. Run it against `wine/templates/cellar.html` to replace the five consts,
+   **Bottle photos must be embedded, not hotlinked.** Published artifacts
+   (claude.ai and similar sandboxes) block images from other sites, so a
+   remote `image` URL renders as a blank placeholder even though it loads
+   fine when you open the file locally. Give `scripts/embed_images.py` a
+   `{wine name: image URL}` file; it caches small thumbnails under
+   `wine/templates/img/` and prints the JSON for the page's `IMAGES` const.
+   Look at every thumbnail before using it, because retailer product
+   images are sometimes an award badge or a different bottling. Wines
+   with no photo get a bottle placeholder tinted by style. To check the
+   result, render the page with the network blocked (e.g. Chrome/Edge
+   headless with `--host-resolver-rules="MAP * ~NOTFOUND"`). A normal
+   local render loads the remote images and hides the problem.
+3. Run it against `wine/templates/cellar.html` to replace the six consts
+   (`IMAGES` included),
    then double-check nothing was left referencing stale data.
 4. Publish via whatever artifact-hosting mechanism you're using,
    republishing to the same URL rather than creating a new one each time.
