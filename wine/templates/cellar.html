@@ -58,6 +58,15 @@ nav.tabs button:focus-visible{outline:2px solid var(--straw);outline-offset:-2px
 .shot img{width:100%;height:100%;object-fit:contain;display:block}
 .shot.blank{background:linear-gradient(#1A241E,#131A16);border:1px solid var(--line);position:relative}
 .shot.blank .btl{width:14px;height:40px;border-radius:7px 7px 2px 2px;background:var(--dim);position:relative}
+.row .shot{width:76px;height:110px}
+.row .shot.blank .btl{width:20px;height:62px;border-radius:9px 9px 3px 3px}
+.card .shot{width:56px;height:80px}
+.row .rbody{flex:1 1 auto;min-width:0}
+.rwrap{display:flex;gap:14px;align-items:flex-start}
+.shot.blank.white .btl,.shot.blank.white .btl::before{background:#CBB979}
+.shot.blank.rose .btl,.shot.blank.rose .btl::before{background:#D98C9A}
+.shot.blank.red .btl,.shot.blank.red .btl::before{background:#7A2E36}
+.shot.blank.sparkling .btl,.shot.blank.sparkling .btl::before{background:#D9C98A}
 .shot.blank .btl::before{content:"";position:absolute;top:-8px;left:4.5px;width:5px;height:9px;
  border-radius:2px;background:var(--dim)}
 .cname{font-size:14px;color:var(--text);margin:0 0 3px;font-weight:500;line-height:1.3}
@@ -280,12 +289,29 @@ document.querySelectorAll("nav.tabs button").forEach(btn=>{
 });
 
 /* ---------- image fallback ---------- */
-function shot(img){
+/* Bottle photos. Published artifacts block images hotlinked from other
+   sites, so photos must be embedded: IMAGES maps a wine's exact name to a
+   data: URI (see the rebuild-cellar skill and scripts/embed_images.py).
+   A remote URL in WINES/HITLIST is only a last-resort fallback that works
+   when the page is opened locally. Missing photos fall back to a bottle
+   placeholder tinted by style. */
+const IMAGES = {};
+[...WINES, ...HITLIST].forEach(w=>{ if(IMAGES[w.name]) w.image=IMAGES[w.name]; });
+function tintOf(style){
+  const t=(style||"").toLowerCase();
+  if(/ros/.test(t)) return "rose";
+  if(/sparkl|mcc|cap classique|champagne/.test(t)) return "sparkling";
+  // \b keeps place names like "Bredasdorp" from matching "red"
+  if(/\bred\b|cinsault|pinot noir|shiraz|syrah|merlot|cabernet|pinotage|\bblend\b/.test(t) && !/sauvignon|chenin|chardonnay/.test(t)) return "red";
+  return "white";
+}
+function shot(img, style){
   const el=document.createElement("span");
-  if(!img){el.className="shot blank";el.innerHTML='<span class="btl"></span>';return el;}
+  const blank=()=>{el.className="shot blank "+tintOf(style);el.innerHTML='<span class="btl"></span>';};
+  if(!img){blank();return el;}
   el.className="shot";
   const im=document.createElement("img"); im.alt=""; im.loading="lazy"; im.src=img;
-  im.addEventListener("error",()=>{el.className="shot blank";el.innerHTML='<span class="btl"></span>';});
+  im.addEventListener("error",blank);
   el.appendChild(im); return el;
 }
 
@@ -321,7 +347,7 @@ function renderDB(){
   filtered.forEach(w=>{
     const c=document.createElement("div"); c.className="card";
     const top=document.createElement("div"); top.className="cardtop";
-    top.appendChild(shot(w.image));
+    top.appendChild(shot(w.image, w.style));
     const meta=document.createElement("div");
     meta.innerHTML='<p class="cname">'+w.name+'</p><p class="cmeta">'+w.producer+' · '+w.region+'</p>';
     top.appendChild(meta);
@@ -366,8 +392,12 @@ function hitRow(w){
   } else {
     tags += '<span class="tag t-unknown">PRICE UNKNOWN</span>';
   }
-  el.innerHTML = '<div class="rtop"><div><p class="rname">'+w.name+'</p><p class="rmeta">'+w.meta+'</p></div></div>'+
+  const wrap=document.createElement("div"); wrap.className="rwrap";
+  wrap.appendChild(shot(w.image, w.category+" "+w.name));
+  const body=document.createElement("div"); body.className="rbody";
+  body.innerHTML = '<div class="rtop"><div><p class="rname">'+w.name+'</p><p class="rmeta">'+w.meta+'</p></div></div>'+
     '<div class="tags">'+tags+'</div><p class="rnote">'+w.why+'</p>';
+  wrap.appendChild(body); el.appendChild(wrap);
   return el;
 }
 function renderHitlist(){
@@ -401,9 +431,11 @@ renderHitlist();
 
 /* ---------- Next Order tab ---------- */
 const REORDER = WINES.filter(w=>w.verdict==="hit").map(w=>({
-  name:w.name, meta:w.producer+" · "+w.region+(w.price?" · was R"+w.price.toFixed(2):""), kind:"reorder"
+  name:w.name, meta:w.producer+" · "+w.region+(w.price?" · was R"+w.price.toFixed(2):""), kind:"reorder",
+  image:w.image, style:w.style
 }));
-const TRY = HITLIST.map(w=>({ name:w.name, meta:w.meta, kind:"try" }));
+const TRY = HITLIST.map(w=>({ name:w.name, meta:w.meta+(w.price!=null?" · R"+w.price.toFixed(2):""), kind:"try",
+  image:w.image, style:w.category+" "+w.name }));
 const selected={};
 const reorderBody=document.getElementById("reorderbody"), tryBody=document.getElementById("trybody");
 document.getElementById("reordercount").textContent = REORDER.length;
@@ -411,8 +443,9 @@ document.getElementById("trycount").textContent = TRY.length;
 
 function pickRow(w){
   const el=document.createElement("div"); el.className="row pick";
-  el.innerHTML='<div class="rtop"><div><p class="rname">'+w.name+'</p><p class="rmeta">'+w.meta+'</p></div>'+
+  el.innerHTML='<div class="rtop"><div class="rwrap"><span class="shotslot"></span><div class="rbody"><p class="rname">'+w.name+'</p><p class="rmeta">'+w.meta+'</p></div></div>'+
     '<span class="check"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="#12200F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>';
+  el.querySelector(".shotslot").replaceWith(shot(w.image, w.style));
   el.addEventListener("click",()=>{
     el.classList.toggle("selected");
     if(el.classList.contains("selected")) selected[w.name]=w.kind; else delete selected[w.name];
